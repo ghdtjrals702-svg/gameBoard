@@ -1,5 +1,5 @@
 package com.gameboard.controller;
 
-public class MainController {dfdfefe
+public class MainController {
     
 }
