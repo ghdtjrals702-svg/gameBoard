@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name="app_user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -26,5 +26,8 @@ public class AppUser {
 
     @Column(nullable = false)
     private String role;
+
+    @Column(unique = true)
+    private String email;
 }
 

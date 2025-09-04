@@ -6,22 +6,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Entity
-@Table(name="post")
+@Table(name="post_contents")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
-public class Post {
+public class PostContents {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
+    private String title;
     private String name;
     private Integer date;
-    private String postName;
-    private Integer view;
-
+    private String content;
+    private String view;
+    private String img;
 
 }

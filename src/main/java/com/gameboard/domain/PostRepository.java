@@ -1,4 +1,6 @@
 package com.gameboard.domain;
 
-public interface PostRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface PostRepository extends CrudRepository<Post, Long> {
 }
