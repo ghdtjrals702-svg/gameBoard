@@ -17,11 +17,21 @@ public class Post {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private Integer date;
+    private String date;
     private String postName;
     private Integer view;
+    private String contents;
+    private String img;
 
 
 }
+//{
+//        "name": "이름",
+//        "date": "2025-01-01",
+//        "postName": "아무거나",
+//        "view": 0,
+//        "contents":"자고 싶어",
+//        "img": "사진"
+//
+//        }
