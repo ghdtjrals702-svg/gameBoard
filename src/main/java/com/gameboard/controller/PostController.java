@@ -25,5 +25,5 @@ public class PostController {
     public List<PostDto> addPost() {
         List<PostDto> list = postService.getPost();
         return list;
-    }
+    }  
 }
