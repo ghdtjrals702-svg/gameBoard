@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gameboard.domain.Post;
 import com.gameboard.domain.PostRepository;
 import com.gameboard.domain.dto.PostDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,13 @@ public class PostService {
     public Long deletePost(Long id) {
         postRepository.deleteById(id);
         return id;
+    }
+
+    public PostDto updatePost(PostDto postDto) {
+        Post post =  postRepository.findById(postDto.getId())
+                .orElseThrow(EntityNotFoundException::new);
+        post.updatePost(postDto);
+        return postDto;
     }
 }
 

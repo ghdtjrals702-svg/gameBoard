@@ -1,5 +1,6 @@
 package com.gameboard.domain;
 
+import com.gameboard.domain.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,15 @@ public class Post {
     private String img;
 
 
+    public void updatePost(PostDto postDto) {
+        this.name = postDto.getName();
+        this.date = postDto.getDate();
+        this.postName = postDto.getPostName();
+        this.view = postDto.getView();
+        this.contents = postDto.getContents();
+        this.img = postDto.getImg();
+
+    }
 }
 //{
 //        "name": "이름",
