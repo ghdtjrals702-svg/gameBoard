@@ -18,21 +18,21 @@ public class Post {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private String name;
     private String date;
     private String postName;
     private Integer view;
     private String contents;
     private String img;
+    private String nickname;
 
 
     public void updatePost(PostDto postDto) {
-        this.name = postDto.getName();
         this.date = postDto.getDate();
         this.postName = postDto.getPostName();
         this.view = postDto.getView();
         this.contents = postDto.getContents();
         this.img = postDto.getImg();
+        this.nickname = postDto.getNickname();
 
     }
 }

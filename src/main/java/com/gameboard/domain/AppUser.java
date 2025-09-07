@@ -1,5 +1,6 @@
 package com.gameboard.domain;
 
+import com.gameboard.domain.dto.AppUserDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,10 +25,21 @@ public class AppUser {
     @Column(nullable = false)
     private String password;
 
+    @Column(unique = true, nullable = false)
+    private String nickname;
+
     @Column(nullable = false)
     private String role;
 
     @Column(unique = true)
     private String email;
-}
 
+    public void dtoToEntityUser(AppUserDto appUserDto) {
+        this.username = appUserDto.getUsername();
+        this.password = appUserDto.getPassword();
+        this.nickname = appUserDto.getNickname();
+        this.role = appUserDto.getRole();
+        this.email = appUserDto.getEmail();
+    }
+
+}

@@ -9,27 +9,28 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/post")
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/post")
+    @PostMapping
     public PostDto addPost(@RequestBody PostDto postDto) {
         return postService.addPost(postDto);
     }
 
-    @GetMapping("/getPost")
+    @GetMapping
     public List<PostDto> addPost() {
         List<PostDto> list = postService.getPost();
         return list;
     }
 
-    @DeleteMapping("/post/{id}")
+    @DeleteMapping("/{id}")
     public Long deletePost(@PathVariable Long id) {
         return postService.deletePost(id);
     }
 
-    @PutMapping("/post")
+    @PutMapping
     public PostDto updatePost(@RequestBody PostDto postDto) {
         return postService.updatePost(postDto);
     }

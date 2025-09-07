@@ -24,10 +24,10 @@ public class PostService {
         Post post = Post.builder()
                 .postName(postDto.getPostName())
                 .date(postDto.getDate())
-                .name(postDto.getName())
                 .view(postDto.getView())
                 .contents(postDto.getContents())
                 .img(postDto.getImg())
+                .nickname(postDto.getNickname())
                 .build();
         Post savedPost = postRepository.save(post);
         postDto.setId(savedPost.getId());
