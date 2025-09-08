@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -38,7 +39,9 @@ public class PostService {
         return postDto;
     }
 
-    public List<PostDto> getPost() {
+    // 한 개만 조회할 때에는 get ex) getData, getPost, getUser...
+    // 여러 개 조회할 때에는 select ex) selectData, selectPost...
+    public List<PostDto> selectPost() {
         List<Post> posts = postRepository.findAll();
         List<PostDto> list = new ArrayList<>();
         for (Post post : posts) {
@@ -46,6 +49,11 @@ public class PostService {
             list.add(dto);
         }
         return list;
+    }
+
+    public PostDto getPost(Long id) throws Exception {
+        Post post = postRepository.findById(id).orElseThrow(() -> new Exception("게시글 정보를 찾을 수 없습니다."));
+        return objectMapper.convertValue(post, PostDto.class);
     }
 
     public Long deletePost(Long id) {

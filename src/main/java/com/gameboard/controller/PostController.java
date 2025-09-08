@@ -27,10 +27,16 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @GetMapping
-    public List<PostDto> addPost() {
-        List<PostDto> list = postService.getPost();
+    @GetMapping("/select")
+    public List<PostDto> selectPost() {
+        List<PostDto> list = postService.selectPost();
         return list;
+    }
+
+    @GetMapping("/get")
+    public PostDto getPost(@RequestParam Long id) throws Exception {
+        PostDto dto = postService.getPost(id);
+        return dto;
     }
 
     @DeleteMapping("/{id}")
