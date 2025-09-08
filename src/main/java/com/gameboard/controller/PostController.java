@@ -34,4 +34,6 @@ public class PostController {
     public PostDto updatePost(@RequestBody PostDto postDto) {
         return postService.updatePost(postDto);
     }
+
+
 }

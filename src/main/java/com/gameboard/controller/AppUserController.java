@@ -68,16 +68,16 @@ public class AppUserController {
     }
 
 
-//    /**
-//     * jwt 인증이 끝나면 username을 서버에 가지고 있는다. 그 username을 이용해서 사용자 정보를 조회하고 반환한다.
-//     *
-//     * @param username
-//     * @return
-//     */
-//    @GetMapping(value = "/authentication")
-//    public ResponseEntity<AppUserDto> authentication(@AuthenticationPrincipal String username) throws Exception {
-//        return ResponseEntity.ok(appUserService.findUserInfomatiton(username));
-//    }
+    /**
+     * jwt 인증이 끝나면 username을 서버에 가지고 있는다. 그 username을 이용해서 사용자 정보를 조회하고 반환한다.
+     *
+     * @param username
+     * @return
+     */
+    @GetMapping(value = "/authentication")
+    public ResponseEntity<AppUserDto> authentication(@AuthenticationPrincipal String username) throws Exception {
+        return ResponseEntity.ok(appUserService.findUserInfomatiton(username));
+    }
 }
 
 //    @PostMapping(value = "/login")
