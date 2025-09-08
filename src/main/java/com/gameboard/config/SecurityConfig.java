@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -28,12 +30,16 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         //인코딩 없이 진행
+        //return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManagerBuilder auth)
             throws Exception {
+
+        http.csrf((csrf) -> csrf.disable());
+        //http.cors(withDefaults());
 
         // 세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
@@ -43,22 +49,27 @@ public class SecurityConfig {
         http.formLogin((form) -> form.disable());
         http.httpBasic(AbstractHttpConfigurer::disable);
 
-        // 권한 규칙 작성
-        http
-                .csrf(csrf -> csrf.disable())
-                .cors(withDefaults())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .formLogin(form -> form.disable())
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user/signUp").permitAll()
-                        .requestMatchers("/api/signUp", "/user/check-username", "/user/check-nickname").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryConfig));
+        // 권한 규칙 작성 (한 번만!)
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
+                .requestMatchers("/api/signUp", "/user/check-username", "/user/check-nickname").permitAll()
+                .anyRequest().authenticated());
+
+        // 필터 추가
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // 예외 핸들링
+        http.exceptionHandling((ex) -> ex.authenticationEntryPoint(authEntryConfig));
 
         return http.build();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();  //exception 발생할 수도 있어서 떠넘긴다
+        //AuthenticationManager 이 타입이 빈으로 관리된다.
+    }
+
 }
