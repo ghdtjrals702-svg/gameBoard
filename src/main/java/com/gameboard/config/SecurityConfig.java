@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,7 +38,7 @@ public class SecurityConfig {
             throws Exception {
 
         http.csrf((csrf) -> csrf.disable());
-        http.cors(withDefaults());
+        //http.cors(withDefaults());
 
         // 세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
@@ -57,4 +59,13 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();  //exception 발생할 수도 있어서 떠넘긴다
+        //AuthenticationManager 이 타입이 빈으로 관리된다.
+    }
+
+
 }
