@@ -30,6 +30,7 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         //인코딩 없이 진행
+        //return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 
@@ -49,14 +50,21 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
 
         // 권한 규칙 작성
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
-                .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((ex) ->
-                        ex.authenticationEntryPoint(authEntryConfig));
-
+        //
+//        http.authorizeHttpRequests(authorize -> authorize
+//                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+//                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
+//                .anyRequest().authenticated())
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling((ex) ->
+//                        ex.authenticationEntryPoint(authEntryConfig));
+//        http.authorizeHttpRequests(authorize -> authorize
+//                .anyRequest().permitAll());
+//
+//        http.authorizeHttpRequests(authorize -> authorize
+//                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+//                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
+//                .anyRequest().authenticated())
         return http.build();
     }
 
