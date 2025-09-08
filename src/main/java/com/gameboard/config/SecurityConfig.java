@@ -53,6 +53,7 @@ public class SecurityConfig {
             http.authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                     .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
+                    .requestMatchers("/api/signUp", "/user/check-username", "/user/check-nickname").permitAll()
                     .anyRequest().authenticated());
 
             // 필터 추가
