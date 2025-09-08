@@ -25,6 +25,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        if (path.startsWith("/api/check-username") || path.startsWith("/api/check-nickname") || path.startsWith("/api/signup")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 필터 ==> 요청, 응답을 중간에서 가로채고 필요한 동작 수행
         //1. 요청 헤더에서 jwt 토큰을 꺼낸다.
         String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);

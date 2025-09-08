@@ -32,11 +32,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManagerBuilder auth)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
-
-        http.csrf((csrf) -> csrf.disable());
-        http.cors(withDefaults());
 
         // 세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
@@ -47,13 +44,20 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
 
         // 권한 규칙 작성
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
-                .anyRequest().authenticated())
+        http
+                .csrf(csrf -> csrf.disable())
+                .cors(withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(form -> form.disable())
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/signUp").permitAll()
+                        .requestMatchers("/api/signUp", "/user/check-username", "/user/check-nickname").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((ex) ->
-                        ex.authenticationEntryPoint(authEntryConfig));
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryConfig));
 
         return http.build();
     }
