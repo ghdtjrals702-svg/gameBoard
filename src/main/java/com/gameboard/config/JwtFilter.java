@@ -27,14 +27,19 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 현재 요청의 경로를 가져옵니다.
         String path = request.getRequestURI();
+        if (path.startsWith("/api/check-username") || path.startsWith("/api/check-nickname") || path.startsWith("/api/signup")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         // 로그인 및 회원가입 경로는 필터를 건너뜁니다.
         if (path.startsWith("/user/login") || path.startsWith("/user/signUp")) {
             filterChain.doFilter(request, response);
             return;
         }
+
         String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (jwtToken != null) {
 
@@ -50,6 +55,14 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+
+
+
+
+        // 필터 ==> 요청, 응답을 중간에서 가로채고 필요한 동작 수행
+        //1. 요청 헤더에서 jwt 토큰을 꺼낸다.
+
+        // 현재 요청의 경로를 가져옵니다.
 
 
 

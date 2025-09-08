@@ -38,32 +38,32 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManagerBuilder auth)
             throws Exception {
 
-            http.csrf((csrf) -> csrf.disable());
-            //http.cors(withDefaults());
+        http.csrf((csrf) -> csrf.disable());
+        //http.cors(withDefaults());
 
-            // 세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
-            http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
-                    SessionCreationPolicy.STATELESS));
+        // 세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
+        http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS));
 
-            // FormLogin, BasicHttp 비활성화
-            http.formLogin((form) -> form.disable());
-            http.httpBasic(AbstractHttpConfigurer::disable);
+        // FormLogin, BasicHttp 비활성화
+        http.formLogin((form) -> form.disable());
+        http.httpBasic(AbstractHttpConfigurer::disable);
 
-            // 권한 규칙 작성 (한 번만!)
-            http.authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-                    .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
-                    .requestMatchers("/api/signUp", "/user/check-username", "/user/check-nickname").permitAll()
-                    .anyRequest().authenticated());
 
-            // 필터 추가
-            http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        // 권한 규칙 작성 (한 번만!)
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
+                .requestMatchers("/api/signUp", "/user/check-username", "/user/check-nickname").permitAll()
+                .anyRequest().authenticated());
+        // 필터 추가
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-            // 예외 핸들링
-            http.exceptionHandling((ex) -> ex.authenticationEntryPoint(authEntryConfig));
+        // 예외 핸들링
+        http.exceptionHandling((ex) -> ex.authenticationEntryPoint(authEntryConfig));
 
-            return http.build();
-        }
+        return http.build();
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -71,6 +71,5 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();  //exception 발생할 수도 있어서 떠넘긴다
         //AuthenticationManager 이 타입이 빈으로 관리된다.
     }
-
 
 }
