@@ -28,10 +28,14 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getRequestURI();
-        if (path.startsWith("/api/check-username") || path.startsWith("/api/check-nickname") || path.startsWith("/api/signup")) {
+        if (path.startsWith("/api/check-username") ||
+                path.startsWith("/api/check-nickname") ||
+                path.startsWith("/api/signup") ||
+                path.startsWith("/api/posts")) {
             filterChain.doFilter(request, response);
             return;
         }
+
 
 
         // 로그인 및 회원가입 경로는 필터를 건너뜁니다.

@@ -40,7 +40,6 @@ public class AppUserController {
         return ResponseEntity.ok(Map.of("exists", exists));
     }
 
-
     @PostMapping(value = "/signUp")
     public AppUserDto addUser(@RequestBody AppUserDto appUserDto) throws Exception {
         return appUserService.addUser(appUserDto);

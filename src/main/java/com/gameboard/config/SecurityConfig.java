@@ -55,6 +55,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                 .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
                 .requestMatchers("/api/signUp", "/user/check-username", "/user/check-nickname").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/posts").permitAll()
                 .anyRequest().authenticated());
         // 필터 추가
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,8 +1,10 @@
 package com.gameboard.controller;
 
+import com.gameboard.domain.Post;
 import com.gameboard.domain.dto.PostDto;
 import com.gameboard.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,12 @@ public class PostController {
     @PostMapping
     public PostDto addPost(@RequestBody PostDto postDto) {
         return postService.addPost(postDto);
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<Post>> getPosts() {
+        List<Post> posts = postService.getAllPosts();
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping

@@ -20,6 +20,10 @@ public class PostService {
     private final PostRepository postRepository;
     private final ObjectMapper objectMapper;
 
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
+
     public PostDto addPost(PostDto postDto) {
         Post post = Post.builder()
                 .postName(postDto.getPostName())
