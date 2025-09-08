@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
+
 public class AuthEntryConfig implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {

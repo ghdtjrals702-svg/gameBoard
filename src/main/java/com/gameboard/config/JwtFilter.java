@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
+
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 

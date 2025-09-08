@@ -38,35 +38,31 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManagerBuilder auth)
             throws Exception {
 
-        http.csrf((csrf) -> csrf.disable());
-        //http.cors(withDefaults());
+            http.csrf((csrf) -> csrf.disable());
+            //http.cors(withDefaults());
 
-        // 세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
-        http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
-                SessionCreationPolicy.STATELESS));
+            // 세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
+            http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS));
 
-        // FormLogin, BasicHttp 비활성화
-        http.formLogin((form) -> form.disable());
-        http.httpBasic(AbstractHttpConfigurer::disable);
+            // FormLogin, BasicHttp 비활성화
+            http.formLogin((form) -> form.disable());
+            http.httpBasic(AbstractHttpConfigurer::disable);
 
-        // 권한 규칙 작성
-        //
-//        http.authorizeHttpRequests(authorize -> authorize
-//                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-//                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
-//                .anyRequest().authenticated())
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling((ex) ->
-//                        ex.authenticationEntryPoint(authEntryConfig));
-//        http.authorizeHttpRequests(authorize -> authorize
-//                .anyRequest().permitAll());
-//
-//        http.authorizeHttpRequests(authorize -> authorize
-//                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-//                .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
-//                .anyRequest().authenticated())
-        return http.build();
-    }
+            // 권한 규칙 작성 (한 번만!)
+            http.authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/user/signUp").permitAll()
+                    .anyRequest().authenticated());
+
+            // 필터 추가
+            http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+            // 예외 핸들링
+            http.exceptionHandling((ex) -> ex.authenticationEntryPoint(authEntryConfig));
+
+            return http.build();
+        }
 
     @Bean
     public AuthenticationManager authenticationManager(
