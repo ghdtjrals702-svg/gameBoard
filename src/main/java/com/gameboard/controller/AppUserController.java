@@ -1,5 +1,6 @@
 package com.gameboard.controller;
 
+import com.gameboard.domain.AppUserRepository;
 import com.gameboard.domain.dto.AppUserDto;
 import com.gameboard.service.AppUserService;
 import com.gameboard.service.JwtService;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/user")
@@ -18,6 +21,20 @@ public class AppUserController {
 
     private final AppUserService appUserService;
     private final JwtService jwtService;
+    private final AppUserRepository appUserRepository;
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestParam String username) {
+        boolean exists = appUserRepository.existsByUsername(username);
+        return ResponseEntity.ok(Map.of("exists", exists));
+    }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<Map<String, Boolean>> checkNickname(@RequestParam String nickname) {
+        boolean exists = appUserRepository.existsByNickname(nickname);
+        return ResponseEntity.ok(Map.of("exists", exists));
+    }
+
 
     @PostMapping(value = "/signUp")
     public AppUserDto addUser(@RequestBody AppUserDto appUserDto) throws Exception {
