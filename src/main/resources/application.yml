@@ -13,6 +13,6 @@ spring:
      database-platform: org.hibernate.dialect.MySQL8Dialect
 
 
-jwt:
-  secret: w7hFq9GZ8r0nL5y1sB2VmJ6pQxY3KdH4aTzUeRkFvNs=
-  expiration: 1800000
+#jwt:
+#  secret: w7hFq9GZ8r0nL5y1sB2VmJ6pQxY3KdH4aTzUeRkFvNs=
+#  expiration: 1800000

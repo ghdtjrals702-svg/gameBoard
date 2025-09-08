@@ -4,6 +4,7 @@ import com.gameboard.domain.AppUserRepository;
 import com.gameboard.domain.dto.AppUserDto;
 import com.gameboard.service.AppUserService;
 import com.gameboard.service.JwtService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -70,5 +71,14 @@ public class AppUserController {
     @GetMapping(value = "/authentication")
     public ResponseEntity<AppUserDto> authentication(@AuthenticationPrincipal String username) throws Exception {
         return ResponseEntity.ok(appUserService.findUserInfomatiton(username));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return ResponseEntity.ok().build();
     }
 }
